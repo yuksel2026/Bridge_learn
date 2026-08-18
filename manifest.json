@@ -1,0 +1,31 @@
+{
+  "name": "Briç - Standart Beşli Majör",
+  "short_name": "Briç",
+  "description": "SAYC / Standart Beşli Majör odaklı briç deklare ve oyun uygulaması.",
+  "lang": "tr",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#061a0d",
+  "theme_color": "#0b3d20",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-apple-180.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}

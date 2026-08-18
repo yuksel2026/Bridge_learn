@@ -1,0 +1,245 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0b3d20">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Briç">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-apple-180.png">
+<title>Briç — Standart Beşli Majör</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="profileOverlay" class="profile-overlay" role="dialog" aria-modal="true" aria-labelledby="profileTitle">
+  <div class="profile-card">
+    <h2 id="profileTitle">Briç Ayarları</h2>
+    <p class="profile-sub" id="profileIntro">İlk kullanımda sisteminizi ve AI seviyesini seçin. Bu seçim cihazınızda saklanır; daha sonra <b>⚙ Ayarlar</b> düğmesinden istediğiniz zaman değiştirebilirsiniz.</p>
+    <div class="profile-section">
+      <h3>1. Sistem</h3>
+      <label class="profile-option"><input type="radio" name="bridgeSystem" value="sayc" checked>
+        <span class="profile-title">SAYC / 5'li Majör</span>
+        <span class="profile-desc">Briçte yaygın bir başlangıç sistemidir. 5 kartlı majör açılışlarını kullanır; yeni başlayan ve orta seviye oyuncular için anlaşılması kolaydır.</span>
+        <span class="profile-example">Örnek: 1♥ veya 1♠ açılışı 5+ kartlı majörü gösterir.</span>
+      </label>
+      <label class="profile-option"><input type="radio" name="bridgeSystem" value="two_over_one">
+        <span class="profile-title">2/1 Game Force</span>
+        <span class="profile-desc">Majör açılışına 2 seviyesinde yeni bir renkle cevap verildiğinde ortaklığı en az oyun seviyesine kadar forcing hale getirir. SAYC'e göre daha ayrıntılı ve ileri düzey bir sistemdir.</span>
+        <span class="profile-example">Örnek: 1♠ – 2♣ → 2/1 Game Force.</span>
+      </label>
+      <label class="profile-option"><input type="radio" name="bridgeSystem" value="custom">
+        <span class="profile-title">Diğer / Özel Sistem</span>
+        <span class="profile-desc">Bu sürümde temel motor SAYC kurallarını kullanır. Özel sistem desteği ilerleyen sürümlerde genişletilebilir.</span>
+      </label>
+    </div>
+    <div class="profile-section">
+      <h3>2. Konvansiyonlar</h3>
+      <div class="profile-grid">
+        <label class="profile-option"><input type="checkbox" name="conv" value="stayman" checked><span class="profile-title">Stayman</span><span class="profile-desc">1NT sonrası 2♣ ile 4 kartlı majör arar.</span><span class="profile-example">1NT – 2♣</span></label>
+        <label class="profile-option"><input type="checkbox" name="conv" value="transfer" checked><span class="profile-title">Jacoby Transfer</span><span class="profile-desc">1NT sonrası partnerden ♥ veya ♠ rengini göstermesini ister.</span><span class="profile-example">1NT – 2♦ → ♥</span></label>
+        <label class="profile-option"><input type="checkbox" name="conv" value="rkcb" checked><span class="profile-title">RKCB – 1430</span><span class="profile-desc">4NT ile Key Card'ları sorarak slam araştırması yapar.</span><span class="profile-example">4NT → 5♣ / 5♦ / 5♥ / 5♠</span></label>
+        <label class="profile-option"><input type="checkbox" name="conv" value="negative_double" checked><span class="profile-title">Negative Double</span><span class="profile-desc">Rakip araya girdiğinde gösterilemeyen renkleri ve uygun gücü belirtir.</span><span class="profile-example">1♣ – 1♠ – X</span></label>
+      </div>
+      <button class="profile-link" type="button" onclick="toggleAdvancedConventions()" id="advancedToggle">＋ İleri konvansiyonları göster</button>
+      <div class="profile-grid profile-advanced" id="advancedConventions">
+        <label class="profile-option"><input type="checkbox" name="conv" value="michaels"><span class="profile-title">Michaels Cue-Bid</span><span class="profile-desc">Rakibin rengini cue-bid ederek iki renkli eli gösteren konvansiyon.</span><span class="profile-example">1♣ – 2♣ → iki majör</span></label>
+        <label class="profile-option"><input type="checkbox" name="conv" value="unusual_2nt"><span class="profile-title">Unusual 2NT</span><span class="profile-desc">Rakibin 1 seviyesindeki renk açılışına 2NT ile iki minör gösterir.</span><span class="profile-example">1♥ – 2NT → ♣ + ♦</span></label>
+        <label class="profile-option"><input type="checkbox" name="conv" value="support_double"><span class="profile-title">Support Double</span><span class="profile-desc">Partnerin gösterdiği renkte genellikle 3 kart desteği belirtmek için kullanılır.</span><span class="profile-example">1♦ – 1♥ – 1♠ – X</span></label>
+        <label class="profile-option"><input type="checkbox" name="conv" value="responsive_double"><span class="profile-title">Responsive Double</span><span class="profile-desc">Partnerin takeout double'ından sonra rakibin teklifine karşı çok renkli eli gösterir.</span><span class="profile-example">1♣ – X – 1♥ – X</span></label>
+      </div>
+      <div class="profile-note">Başlangıç önerisi: SAYC + Stayman + Transfer + RKCB 1430 + Negative Double. İleri konvansiyonları daha sonra açabilirsiniz.</div>
+    </div>
+    <div class="profile-section">
+      <h3>3. AI Seviyesi</h3>
+      <div class="profile-grid">
+        <label class="profile-option"><input type="radio" name="aiLevelChoice" value="1"><span class="profile-title">Beginner</span><span class="profile-desc">Daha öğretici ve hata yapmaya açık oyun.</span></label>
+        <label class="profile-option"><input type="radio" name="aiLevelChoice" value="2"><span class="profile-title">Club</span><span class="profile-desc">Kulüp seviyesi, daha dengeli kararlar.</span></label>
+        <label class="profile-option"><input type="radio" name="aiLevelChoice" value="3"><span class="profile-title">Advanced</span><span class="profile-desc">İleri seviye, daha keskin yer oyunu.</span></label>
+        <label class="profile-option"><input type="radio" name="aiLevelChoice" value="4"><span class="profile-title">Master</span><span class="profile-desc">En güçlü yer oyunu seviyesi.</span></label>
+      </div>
+    </div>
+    <div class="profile-actions">
+      <button class="btn btn-pas" type="button" onclick="closeSystemProfile()">Vazgeç</button>
+      <button class="btn btn-bid" type="button" onclick="saveSystemProfile()">Kaydet</button>
+    </div>
+  </div>
+</div>
+<div id="modeOverlay" class="profile-overlay" role="dialog" aria-modal="true" aria-labelledby="modeTitle">
+  <div class="profile-card">
+    <h2 id="modeTitle">Oyun Modu Seçin</h2>
+    <p class="profile-sub">Nasıl çalışmak istediğinizi seçin. Yeni modlar eklendikçe bu ekran genişleyecek.</p>
+    <div class="mode-grid">
+      <button type="button" class="mode-option" onclick="selectGameMode('ai_bridge')">
+        <strong>AI ile Briç</strong>
+        <span>Mevcut uygulama: AI oyuncularla deklare ve yer oyunu çalışın.</span>
+      </button>
+      <button type="button" class="mode-option" onclick="selectGameMode('online_bidding')">
+        <strong>Online Deklere Çalış</strong>
+        <span>Bir ortakla karşılıklı online deklare çalışmak için hazırlanıyor.</span>
+      </button>
+    </div>
+  </div>
+</div>
+<div id="appRoot">
+<h1>Briç — Standart Beşli Majör</h1>
+<div class="signature">Powered by Yuksel Akyurek</div>
+<button class="mode-btn" onclick="openModeSelector()" aria-label="Oyun modları">☰ Modlar</button>
+<button class="profile-btn" onclick="openSystemProfile()" aria-label="Ayarlar">⚙ Ayarlar</button>
+<div class="info-bar" id="infoBar">
+  <div class="ib-deal" id="ibDeal">El: 1</div>
+  <div class="ib-dealer" id="ibDealer">Dağıtıcı: Kuzey</div>
+  <div class="ib-vul" id="ibVul">Zone: Yok</div>
+  <div class="ib-score">
+    <span class="ib-ns" id="ibNS">NS: 0</span>
+    <span class="ib-sep">|</span>
+    <span class="ib-ew" id="ibEW">EW: 0</span>
+  </div>
+</div>
+
+<!-- ═══ BIDDING TABLE ═══ -->
+<div class="bid-table-wrap" id="bidWrap">
+  <div class="area north">
+    <div class="lbl you" id="northLbl">Kuzey — Siz</div>
+    <div id="hN" class="hand"></div>
+  </div>
+  <div class="area west">
+    <div class="lbl">Batı (AI)</div>
+    <div id="hW" class="ew-container"></div>
+  </div>
+  <div class="center">
+    <div class="strip">
+      <div class="si"><span class="sl">K-HCP</span><span class="sv" id="vHcp">—</span></div>
+      <div class="si"><span class="sl">Dağılım</span><span class="sv" id="vDist">—</span></div>
+      <div class="si"><span class="sl">Toplam</span><span class="sv" id="vTotal">—</span></div>
+      <div class="si" style="margin-left:auto;flex-direction:column;align-items:flex-end;gap:0;">
+        <span class="sl" style="font-size:9px;">KONTRAT</span>
+        <span class="cv" id="vCont">—</span>
+      </div>
+    </div>
+    <div class="log-wrap">
+      <table class="logt">
+        <thead><tr id="logHead"><th>—</th><th>—</th><th>—</th><th>—</th></tr></thead>
+        <tbody id="logBody"></tbody>
+      </table>
+    </div>
+    <div class="thinking" id="thinking">AI düşünüyor…</div>
+    <!-- BID EXPLANATION PANEL -->
+    <div class="anl" id="anl"></div>
+    <div class="ctrl" id="ctrl">
+      <div class="row1" id="lvlRow"></div>
+      <div class="row2" id="suitRow"></div>
+      <div class="row3">
+        <button class="btn btn-bid" id="btnBid" onclick="doBid()" disabled>Deklare</button>
+        <button class="btn btn-pas" onclick="doPass()">Pas</button>
+        <button class="btn btn-dbl" id="btnDbl" onclick="doDouble()" disabled>Kontr</button>
+        <button class="btn btn-rdbl" id="btnRdbl" onclick="doRedouble()" disabled>S.Kontr</button>
+      </div>
+      <!-- REDEAL button always visible during bidding -->
+      <div style="margin-top:7px;text-align:center;">
+        <button class="btn-redeal" onclick="startGame()">↺ Bu Eli Yenile</button>
+      </div>
+    </div>
+    <button class="btn-new" id="btnNew" onclick="startGame()">✦ Yeni El Dağıt ✦</button>
+  </div>
+  <div class="area east">
+    <div class="lbl">Doğu (AI)</div>
+    <div id="hE" class="ew-container"></div>
+  </div>
+  <div class="area south">
+    <div id="hS" class="hand"></div>
+    <div style="margin:5px 0;font-size:12px;text-align:center;opacity:.85;">
+      HCP:<b id="sHcp">—</b> | Dağılım:<b id="sDist">—</b> | Toplam:<b id="sTotal" style="color:var(--gold2)">—</b>
+    </div>
+    <div class="lbl you">Güney — Siz (Dağıtıcı)</div>
+  </div>
+</div>
+
+<!-- ═══ PLAY PHASE ═══ -->
+<div class="play-wrap" id="playWrap">
+  <div id="playBanner" style="display:none;width:100%;background:rgba(0,0,0,0.45);border:1px solid var(--gdim);border-radius:8px;padding:7px 14px;font-family:'Playfair Display',serif;font-size:13px;text-align:center;margin-bottom:4px;color:var(--cream);letter-spacing:.5px;"></div>
+<div class="play-felt">
+    <!-- TOP = South (S) — fixed position -->
+    <div class="parea pdecl">
+      <div class="turn-badge" id="pLblS">Güney</div>
+      <div id="ph-S" style="width:100%;"></div>
+      <div class="tricks-ct" id="tc-S"></div>
+    </div>
+    <!-- LEFT = West (W) — fixed position -->
+    <div class="parea pdef1">
+      <div class="turn-badge" id="pLblW">Batı</div>
+      <div id="ph-W-play" style="width:100%;"></div>
+      <div class="tricks-ct" id="tc-W"></div>
+    </div>
+    <!-- CENTER TRICK -->
+    <div class="ptrick-area">
+      <div class="trick-center" id="trickCenter"></div>
+    </div>
+    <!-- RIGHT = East (E) — fixed position -->
+    <div class="parea pdef2">
+      <div class="turn-badge" id="pLblE">Doğu</div>
+      <div id="ph-E-play" style="width:100%;"></div>
+      <div class="tricks-ct" id="tc-E"></div>
+    </div>
+    <!-- BOTTOM = North (N) — user, fixed position -->
+    <div class="parea pdummy">
+      <div id="ph-N" style="width:100%;"></div>
+      <div class="turn-badge" id="pLblN">Kuzey (Siz)</div>
+    </div>
+  </div>
+  <div class="score-bar" id="scoreBar">
+    <div class="score-title">✦ Oyun Sonucu</div>
+    <div id="scoreContent"></div>
+    <div style="display:flex;gap:8px;margin-top:10px;">
+      <button class="btn-new" style="display:block;flex:2;" onclick="startGame()">✦ Sonraki El ✦</button>
+      <button class="btn-new" style="display:block;flex:1;background:rgba(20,60,90,0.7);border-color:rgba(90,160,200,0.4);color:#80c8e0;font-size:10px;" onclick="revealAllHands()">👁 Tüm Elleri Göster</button>
+      <button class="btn-new" style="display:block;flex:1;background:rgba(60,20,20,0.7);border-color:rgba(200,80,80,0.4);color:#e08080;font-size:10px;" onclick="startGame(true)">Sıfırla</button>
+    </div>
+  </div>
+</div>
+
+<div class="online-placeholder" id="onlineMode">
+  <div class="score-title">Online Deklere Çalış</div>
+  <div>Oda oluşturma altyapısı eklenene kadar deklare çalışmasını AI desteğiyle başlatabilirsiniz.</div>
+  <div class="mode-grid">
+    <button type="button" class="mode-option" onclick="startOnlineBiddingPractice('partner_only')">
+      <strong>Karşılıklı Deklere</strong>
+      <span>Siz Kuzey, partner Güney AI. Doğu/Batı ihaleye girmez; deklare bitince eller açılır.</span>
+    </button>
+    <button type="button" class="mode-option" onclick="startOnlineBiddingPractice('ew_ai')">
+      <strong>E/W AI ile Deklere</strong>
+      <span>Siz ve AI partneriniz, Doğu/Batı AI rakiplere karşı yalnızca deklare çalışır.</span>
+    </button>
+  </div>
+</div>
+
+<!-- CONTRACT INFO PANEL -->
+<div class="contract-info" id="contractInfo">
+  <div class="ci-contract" id="ci-contract">—</div>
+  <div class="ci-side" id="ci-side">—</div>
+  <div class="ci-row">
+    <span class="ci-label">Gerekli el</span>
+    <span class="ci-val" id="ci-need">—</span>
+  </div>
+  <div class="ci-row">
+    <span class="ci-label">Alınan el</span>
+    <span class="ci-val" id="ci-have">—</span>
+  </div>
+  <div class="ci-row">
+    <span class="ci-label">Kalan</span>
+    <span class="ci-val" id="ci-left">—</span>
+  </div>
+  <div class="ci-progress">
+    <div class="ci-bar" id="ci-bar" style="width:0%"></div>
+  </div>
+</div>
+</div><!-- /appRoot -->
+
+<script src="app.js"></script>
+</body>
+</html>
+
